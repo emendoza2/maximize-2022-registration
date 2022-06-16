@@ -20,18 +20,18 @@ window.onload = function () {
       var fields = window.TripettoRunner.Export.exportables(instance);
       fields.name = window.FORM_DEFINITION.name || window.FORM_DEFINITION._value.name;
       console.log(fields);
-      fetch(
-        "https://script.google.com/macros/s/AKfycbzshwiKylA18QhFyKzuNPkBrLNo8YD83goVlMLB_QcLPHXOL3mteB771FM0agUDDqzp4A/exec?key=safety",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain",
-          },
-          body: JSON.stringify(fields),
-        }
-      )
-        .then((res) => res.text())
-        .then((text) => console.log(text));
+      // fetch(
+      //   "https://script.google.com/macros/s/AKfycbzshwiKylA18QhFyKzuNPkBrLNo8YD83goVlMLB_QcLPHXOL3mteB771FM0agUDDqzp4A/exec?key=safety",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "text/plain",
+      //     },
+      //     body: JSON.stringify(fields),
+      //   }
+      // )
+      //   .then((res) => res.text())
+      //   .then((text) => console.log(text));
     },
     persistent: true,
     display: "page",
