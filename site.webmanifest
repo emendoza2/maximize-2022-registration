@@ -1,0 +1,19 @@
+{
+    "name": "2Be1 Registration",
+    "short_name": "",
+    "icons": [
+        {
+            "src": "https://cdn.glitch.global/0146f83e-fa82-4cb1-93d2-eb4b120b8a10/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://cdn.glitch.global/0146f83e-fa82-4cb1-93d2-eb4b120b8a10/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
