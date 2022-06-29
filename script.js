@@ -6,63 +6,75 @@ This is your site JavaScript code - you can add interactivity and carry out proc
 // Print a message in the browser's dev tools console each time the page loads
 // Use your menus or right-click / control-click and choose "Inspect" > "Console"
 console.log("Hello 🌎");
-var tripetto = window.TripettoServices.init({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNFI5QkNGWVNsd2ZRblJOQVpoWHE4YlJDVGxvbGt2bjMwejU1TWQzbS85MD0iLCJkZWZpbml0aW9uIjoieEhGU1pza20weE9sbTZZakJQVG1BaW9aNHhqRGpUdzdzVVVSTkduajdCND0iLCJ0eXBlIjoiY29sbGVjdCJ9.smUZuyo5bR22w7s00PFrY4wRTHZXvM5mzufVqeOmiTI" });
-window.FORM_DEFINITION = tripetto.definition;
 
-window.onload = function () {
-  window.TripettoChat.run({
+/* Configuration: General */
+var API_URL = "https://script.google.com/macros/s/AKfycbzshwiKylA18QhFyKzuNPkBrLNo8YD83goVlMLB_QcLPHXOL3mteB771FM0agUDDqzp4A/exec";
+var TRIPETTO_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNFI5QkNGWVNsd2ZRblJOQVpoWHE4YlJDVGxvbGt2bjMwejU1TWQzbS85MD0iLCJkZWZpbml0aW9uIjoieEhGU1pza20weE9sbTZZakJQVG1BaW9aNHhqRGpUdzdzVVVSTkduajdCND0iLCJ0eXBlIjoiY29sbGVjdCJ9.smUZuyo5bR22w7s00PFrY4wRTHZXvM5mzufVqeOmiTI";
+
+var tripetto = window.TripettoServices.init({
+  token: TRIPETTO_TOKEN
+});
+var FORM_DEFINITION = tripetto.definition;
+var CUSTOM_CSS = window.CUSTOM_CSS;
+var FORM_STYLES = window.FORM_STYLES;
+
+var handleChange, handleImport, handleSubmit;
+
+/* Instance-specific config & initialization */
+
+var runner = window.TripettoChat;
+
+function main() {
+  runner.run({
     element: document.body,
-    definition: window.FORM_DEFINITION,
-    styles: window.FORM_STYLES,
-    onSubmit: function (instance) {
-      // TODO: Handle the results
-      // Or retrieve the individual fields:
+    definition: FORM_DEFINITION,
+    styles: FORM_STYLES,
+    onChange: handleChange,
+    onImport: handleImport,
+    onSubmit: (handleSubmit || function (instance, r, n, o) {
       var fields = window.TripettoRunner.Export.exportables(instance);
-      fields.name = window.FORM_DEFINITION.name || window.FORM_DEFINITION._value.name;
-      console.log(fields);
-      // fetch(
-      //   "https://script.google.com/macros/s/AKfycbzshwiKylA18QhFyKzuNPkBrLNo8YD83goVlMLB_QcLPHXOL3mteB771FM0agUDDqzp4A/exec?key=safety",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "text/plain",
-      //     },
-      //     body: JSON.stringify(fields),
-      //   }
-      // )
-      //   .then((res) => res.text())
-      //   .then((text) => console.log(text));
-    },
+      fields.name =
+        window.FORM_DEFINITION.name || window.FORM_DEFINITION._value.name;
+      var actionables = window.TripettoRunner.Export.actionables(instance);
+      fetch(
+        API_URL+"?key=safety",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          body: JSON.stringify({exportables: fields, actionables: actionables}),
+        }
+      )
+        .then((res) => res.text())
+        .then((text) => console.log(text));
+      return tripetto.onSubmit(instance, r, n, o)
+    }),
     persistent: true,
     display: "page",
-    customCSS: `
-      nav > div > div > div:last-child > a, html body div div div div div div a, div.sc-eCImPb a {
-        opacity: 0.5
-      }
-      body div * {
-        font-family: "Comfortaa", sans-serif !important;
-        font-weight: 350;
-      }
-      h2 > label *, h2 *, .kDCMTC {
-        font-weight: 700;
-      }
-      div div div.sc-jRQBWg > div:last-child h3 {
-        opacity: 0.5;
-        font-weight: 700;
-      }
-      body div div div.sc-jRQBWg > div.lleNLY:last-child h3 + p {
-  opacity: 0.5;
-}
-body div div div.sc-jRQBWg > div.lleNLY:last-child h3 + nav {
-  opacity: 0.5;
-}
-      div div div.sc-jRQBWg > div:last-child {
-        /*opacity: 0.5;*/
-      }
-      .sc-cxabCf.iuDZmx {
-        color: #fffa;
-      }
-    `,
-    className: "your-custom-class-name"
+    customCSS: CUSTOM_CSS,
+    className: "tripetto-iframe",
   });
-};
+}
+
+window.onload = main;
+
+/* Utilities */
+function dataURItoBlob(dataURI) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(",")[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  return new Blob(ia, { type: mimeString });
+}
