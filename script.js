@@ -8,7 +8,7 @@ This is your site JavaScript code - you can add interactivity and carry out proc
 console.log("Hello 🌎");
 
 /* Configuration: General */
-var API_URL = "https://script.google.com/macros/s/AKfycbzshwiKylA18QhFyKzuNPkBrLNo8YD83goVlMLB_QcLPHXOL3mteB771FM0agUDDqzp4A/exec";
+var API_URL = "https://script.google.com/macros/s/AKfycbxtYvqBQxZ398JNzBF_PyMiCj9HORORuu6Z8sZC67aUld9rmKhOh-toNXk1sUvrHu8w/exec";
 var TRIPETTO_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNFI5QkNGWVNsd2ZRblJOQVpoWHE4YlJDVGxvbGt2bjMwejU1TWQzbS85MD0iLCJkZWZpbml0aW9uIjoieEhGU1pza20weE9sbTZZakJQVG1BaW9aNHhqRGpUdzdzVVVSTkduajdCND0iLCJ0eXBlIjoiY29sbGVjdCJ9.smUZuyo5bR22w7s00PFrY4wRTHZXvM5mzufVqeOmiTI";
 
 var tripetto = window.TripettoServices.init({
@@ -22,7 +22,7 @@ var handleChange, handleImport, handleSubmit;
 
 /* Instance-specific config & initialization */
 
-var runner = window.TripettoChat;
+var runner = window.TripettoClassic;
 
 function main() {
   runner.run({
