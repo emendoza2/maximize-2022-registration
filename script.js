@@ -22,13 +22,14 @@ var handleChange, handleImport, handleSubmit;
 
 /* Instance-specific config & initialization */
 
-var runner = window.TripettoClassic;
+var runner = window.TripettoChat;
 
 function main() {
   runner.run({
     element: document.body,
     definition: FORM_DEFINITION,
     styles: FORM_STYLES,
+    attachments: tripetto.attachments, /* depending on the circumstance */
     onChange: handleChange,
     onImport: handleImport,
     onSubmit: (handleSubmit || function (instance, r, n, o) {
